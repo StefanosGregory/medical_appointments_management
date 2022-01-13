@@ -1,13 +1,69 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="MedicalDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="MedicalDBEntities" annotation:LazyLoadingEnabled="true">
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(MedicalDBModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(MedicalDBModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+    <EntitySet Name="ADMINs" EntityType="MedicalDBModel.ADMIN" />
+    <EntitySet Name="APPOINTMENTs" EntityType="MedicalDBModel.APPOINTMENT" />
+    <EntitySet Name="DOCTORs" EntityType="MedicalDBModel.DOCTOR" />
+    <EntitySet Name="PATIENTs" EntityType="MedicalDBModel.PATIENT" />
+    <EntitySet Name="sysdiagrams" EntityType="MedicalDBModel.sysdiagram" />
+    <AssociationSet Name="FK_APPOINTMENT_DOCTOR_AMKA" Association="MedicalDBModel.FK_APPOINTMENT_DOCTOR_AMKA">
+      <End Role="DOCTOR" EntitySet="DOCTORs" />
+      <End Role="APPOINTMENT" EntitySet="APPOINTMENTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_APPOINTMENT_PATIENT_AMKA" Association="MedicalDBModel.FK_APPOINTMENT_PATIENT_AMKA">
+      <End Role="PATIENT" EntitySet="PATIENTs" />
+      <End Role="APPOINTMENT" EntitySet="APPOINTMENTs" />
+    </AssociationSet>
+  </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
   <EntityType Name="ADMIN">
     <Key>
       <PropertyRef Name="userid" />
     </Key>
     <Property Name="userid" Type="Int32" Nullable="false" />
-    <Property Name="username" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="hash" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="salt" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="username" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="hash" Type="String" Nullable="false" MaxLength="512" FixedLength="true" Unicode="true" />
+    <Property Name="salt" Type="String" Nullable="false" MaxLength="512" FixedLength="true" Unicode="true" />
   </EntityType>
   <EntityType Name="APPOINTMENT">
     <Key>
@@ -19,49 +75,48 @@
     <Property Name="PATIENT_patientAMKA" Type="Int32" Nullable="false" />
     <Property Name="DOCTOR_doctorAMKA" Type="Int32" Nullable="false" />
     <Property Name="isAvailable" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="DOCTOR" Relationship="Self.FK_APPOINTMENT_DOCTOR_AMKA" FromRole="APPOINTMENT" ToRole="DOCTOR" />
-    <NavigationProperty Name="PATIENT" Relationship="Self.FK_APPOINTMENT_PATIENT_AMKA" FromRole="APPOINTMENT" ToRole="PATIENT" />
+    <NavigationProperty Name="DOCTOR" Relationship="MedicalDBModel.FK_APPOINTMENT_DOCTOR_AMKA" FromRole="APPOINTMENT" ToRole="DOCTOR" />
+    <NavigationProperty Name="PATIENT" Relationship="MedicalDBModel.FK_APPOINTMENT_PATIENT_AMKA" FromRole="APPOINTMENT" ToRole="PATIENT" />
   </EntityType>
   <EntityType Name="DOCTOR">
     <Key>
       <PropertyRef Name="doctorAMKA" />
     </Key>
     <Property Name="doctorAMKA" Type="Int32" Nullable="false" />
-    <Property Name="username" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="surname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="specialty" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="hash" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="salt" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
-    <NavigationProperty Name="APPOINTMENTs" Relationship="Self.FK_APPOINTMENT_DOCTOR_AMKA" FromRole="DOCTOR" ToRole="APPOINTMENT" />
+    <Property Name="username" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="surname" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="specialty" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="hash" Type="String" Nullable="false" MaxLength="512" FixedLength="true" Unicode="true" />
+    <Property Name="salt" Type="String" Nullable="false" MaxLength="512" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="APPOINTMENTs" Relationship="MedicalDBModel.FK_APPOINTMENT_DOCTOR_AMKA" FromRole="DOCTOR" ToRole="APPOINTMENT" />
   </EntityType>
   <EntityType Name="PATIENT">
     <Key>
       <PropertyRef Name="patientAMKA" />
     </Key>
     <Property Name="patientAMKA" Type="Int32" Nullable="false" />
-    <Property Name="userid" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="username" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="surname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="hash" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="salt" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="userid" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="username" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="surname" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="hash" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="true" />
     <Property Name="role" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="APPOINTMENTs" Relationship="Self.FK_APPOINTMENT_PATIENT_AMKA" FromRole="PATIENT" ToRole="APPOINTMENT" />
+    <NavigationProperty Name="APPOINTMENTs" Relationship="MedicalDBModel.FK_APPOINTMENT_PATIENT_AMKA" FromRole="PATIENT" ToRole="APPOINTMENT" />
   </EntityType>
   <EntityType Name="sysdiagram">
     <Key>
       <PropertyRef Name="diagram_id" />
     </Key>
-    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="principal_id" Type="Int32" Nullable="false" />
     <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="version" Type="Int32" />
     <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <Association Name="FK_APPOINTMENT_DOCTOR_AMKA">
-    <End Role="DOCTOR" Type="Self.DOCTOR" Multiplicity="1" />
-    <End Role="APPOINTMENT" Type="Self.APPOINTMENT" Multiplicity="*" />
+    <End Type="MedicalDBModel.DOCTOR" Role="DOCTOR" Multiplicity="1" />
+    <End Type="MedicalDBModel.APPOINTMENT" Role="APPOINTMENT" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCTOR">
         <PropertyRef Name="doctorAMKA" />
@@ -72,8 +127,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_APPOINTMENT_PATIENT_AMKA">
-    <End Role="PATIENT" Type="Self.PATIENT" Multiplicity="1" />
-    <End Role="APPOINTMENT" Type="Self.APPOINTMENT" Multiplicity="*" />
+    <End Type="MedicalDBModel.PATIENT" Role="PATIENT" Multiplicity="1" />
+    <End Type="MedicalDBModel.APPOINTMENT" Role="APPOINTMENT" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="PATIENT">
         <PropertyRef Name="patientAMKA" />
@@ -83,19 +138,4 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="MedicalDBEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="ADMINs" EntityType="Self.ADMIN" />
-    <EntitySet Name="APPOINTMENTs" EntityType="Self.APPOINTMENT" />
-    <EntitySet Name="DOCTORs" EntityType="Self.DOCTOR" />
-    <EntitySet Name="PATIENTs" EntityType="Self.PATIENT" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-    <AssociationSet Name="FK_APPOINTMENT_DOCTOR_AMKA" Association="Self.FK_APPOINTMENT_DOCTOR_AMKA">
-      <End Role="DOCTOR" EntitySet="DOCTORs" />
-      <End Role="APPOINTMENT" EntitySet="APPOINTMENTs" />
-    </AssociationSet>
-    <AssociationSet Name="FK_APPOINTMENT_PATIENT_AMKA" Association="Self.FK_APPOINTMENT_PATIENT_AMKA">
-      <End Role="PATIENT" EntitySet="PATIENTs" />
-      <End Role="APPOINTMENT" EntitySet="APPOINTMENTs" />
-    </AssociationSet>
-  </EntityContainer>
 </Schema>

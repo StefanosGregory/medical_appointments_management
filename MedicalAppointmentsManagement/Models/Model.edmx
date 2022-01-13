@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MedicalDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MedicalDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ADMIN">
           <Key>
             <PropertyRef Name="userid" />
@@ -46,8 +46,7 @@
           <Property Name="username" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="surname" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="hash" Type="nchar" MaxLength="512" Nullable="false" />
-          <Property Name="salt" Type="nchar" MaxLength="512" Nullable="false" />
+          <Property Name="hash" Type="nvarchar" MaxLength="45" Nullable="false" />
           <Property Name="role" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="sysdiagrams">
@@ -84,6 +83,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="MedicalDBModelStoreContainer">
           <EntitySet Name="ADMIN" EntityType="Self.ADMIN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="APPOINTMENT" EntityType="Self.APPOINTMENT" Schema="dbo" store:Type="Tables" />
@@ -99,19 +129,74 @@
             <End Role="APPOINTMENT" EntitySet="APPOINTMENT" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MedicalDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="MedicalDBEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(MedicalDBModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(MedicalDBModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="ADMINs" EntityType="MedicalDBModel.ADMIN" />
+          <EntitySet Name="APPOINTMENTs" EntityType="MedicalDBModel.APPOINTMENT" />
+          <EntitySet Name="DOCTORs" EntityType="MedicalDBModel.DOCTOR" />
+          <EntitySet Name="PATIENTs" EntityType="MedicalDBModel.PATIENT" />
+          <EntitySet Name="sysdiagrams" EntityType="MedicalDBModel.sysdiagram" />
+          <AssociationSet Name="FK_APPOINTMENT_DOCTOR_AMKA" Association="MedicalDBModel.FK_APPOINTMENT_DOCTOR_AMKA">
+            <End Role="DOCTOR" EntitySet="DOCTORs" />
+            <End Role="APPOINTMENT" EntitySet="APPOINTMENTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_APPOINTMENT_PATIENT_AMKA" Association="MedicalDBModel.FK_APPOINTMENT_PATIENT_AMKA">
+            <End Role="PATIENT" EntitySet="PATIENTs" />
+            <End Role="APPOINTMENT" EntitySet="APPOINTMENTs" />
+          </AssociationSet>
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
         <EntityType Name="ADMIN">
           <Key>
             <PropertyRef Name="userid" />
           </Key>
           <Property Name="userid" Type="Int32" Nullable="false" />
-          <Property Name="username" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="hash" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="salt" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="hash" Type="String" Nullable="false" MaxLength="512" FixedLength="true" Unicode="true" />
+          <Property Name="salt" Type="String" Nullable="false" MaxLength="512" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="APPOINTMENT">
           <Key>
@@ -123,49 +208,48 @@
           <Property Name="PATIENT_patientAMKA" Type="Int32" Nullable="false" />
           <Property Name="DOCTOR_doctorAMKA" Type="Int32" Nullable="false" />
           <Property Name="isAvailable" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="DOCTOR" Relationship="Self.FK_APPOINTMENT_DOCTOR_AMKA" FromRole="APPOINTMENT" ToRole="DOCTOR" />
-          <NavigationProperty Name="PATIENT" Relationship="Self.FK_APPOINTMENT_PATIENT_AMKA" FromRole="APPOINTMENT" ToRole="PATIENT" />
+          <NavigationProperty Name="DOCTOR" Relationship="MedicalDBModel.FK_APPOINTMENT_DOCTOR_AMKA" FromRole="APPOINTMENT" ToRole="DOCTOR" />
+          <NavigationProperty Name="PATIENT" Relationship="MedicalDBModel.FK_APPOINTMENT_PATIENT_AMKA" FromRole="APPOINTMENT" ToRole="PATIENT" />
         </EntityType>
         <EntityType Name="DOCTOR">
           <Key>
             <PropertyRef Name="doctorAMKA" />
           </Key>
           <Property Name="doctorAMKA" Type="Int32" Nullable="false" />
-          <Property Name="username" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="surname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="specialty" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="hash" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="salt" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="APPOINTMENTs" Relationship="Self.FK_APPOINTMENT_DOCTOR_AMKA" FromRole="DOCTOR" ToRole="APPOINTMENT" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="surname" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="specialty" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="hash" Type="String" Nullable="false" MaxLength="512" FixedLength="true" Unicode="true" />
+          <Property Name="salt" Type="String" Nullable="false" MaxLength="512" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="APPOINTMENTs" Relationship="MedicalDBModel.FK_APPOINTMENT_DOCTOR_AMKA" FromRole="DOCTOR" ToRole="APPOINTMENT" />
         </EntityType>
         <EntityType Name="PATIENT">
           <Key>
             <PropertyRef Name="patientAMKA" />
           </Key>
           <Property Name="patientAMKA" Type="Int32" Nullable="false" />
-          <Property Name="userid" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="username" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="surname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="hash" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="salt" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="userid" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="surname" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="hash" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="true" />
           <Property Name="role" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="APPOINTMENTs" Relationship="Self.FK_APPOINTMENT_PATIENT_AMKA" FromRole="PATIENT" ToRole="APPOINTMENT" />
+          <NavigationProperty Name="APPOINTMENTs" Relationship="MedicalDBModel.FK_APPOINTMENT_PATIENT_AMKA" FromRole="PATIENT" ToRole="APPOINTMENT" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
             <PropertyRef Name="diagram_id" />
           </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="principal_id" Type="Int32" Nullable="false" />
           <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <Association Name="FK_APPOINTMENT_DOCTOR_AMKA">
-          <End Role="DOCTOR" Type="Self.DOCTOR" Multiplicity="1" />
-          <End Role="APPOINTMENT" Type="Self.APPOINTMENT" Multiplicity="*" />
+          <End Type="MedicalDBModel.DOCTOR" Role="DOCTOR" Multiplicity="1" />
+          <End Type="MedicalDBModel.APPOINTMENT" Role="APPOINTMENT" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="DOCTOR">
               <PropertyRef Name="doctorAMKA" />
@@ -176,8 +260,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_APPOINTMENT_PATIENT_AMKA">
-          <End Role="PATIENT" Type="Self.PATIENT" Multiplicity="1" />
-          <End Role="APPOINTMENT" Type="Self.APPOINTMENT" Multiplicity="*" />
+          <End Type="MedicalDBModel.PATIENT" Role="PATIENT" Multiplicity="1" />
+          <End Type="MedicalDBModel.APPOINTMENT" Role="APPOINTMENT" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PATIENT">
               <PropertyRef Name="patientAMKA" />
@@ -187,84 +271,92 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="MedicalDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="ADMINs" EntityType="Self.ADMIN" />
-          <EntitySet Name="APPOINTMENTs" EntityType="Self.APPOINTMENT" />
-          <EntitySet Name="DOCTORs" EntityType="Self.DOCTOR" />
-          <EntitySet Name="PATIENTs" EntityType="Self.PATIENT" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-          <AssociationSet Name="FK_APPOINTMENT_DOCTOR_AMKA" Association="Self.FK_APPOINTMENT_DOCTOR_AMKA">
-            <End Role="DOCTOR" EntitySet="DOCTORs" />
-            <End Role="APPOINTMENT" EntitySet="APPOINTMENTs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_APPOINTMENT_PATIENT_AMKA" Association="Self.FK_APPOINTMENT_PATIENT_AMKA">
-            <End Role="PATIENT" EntitySet="PATIENTs" />
-            <End Role="APPOINTMENT" EntitySet="APPOINTMENTs" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="MedicalDBModelStoreContainer" CdmEntityContainer="MedicalDBEntities">
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="MedicalDBModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="MedicalDBModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="MedicalDBModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="MedicalDBModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalDBModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="MedicalDBModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalDBModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="MedicalDBModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="MedicalDBModel.Store.sp_upgraddiagrams" />
           <EntitySetMapping Name="ADMINs">
             <EntityTypeMapping TypeName="MedicalDBModel.ADMIN">
               <MappingFragment StoreEntitySet="ADMIN">
-                <ScalarProperty Name="userid" ColumnName="userid" />
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="hash" ColumnName="hash" />
                 <ScalarProperty Name="salt" ColumnName="salt" />
+                <ScalarProperty Name="hash" ColumnName="hash" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="APPOINTMENTs">
             <EntityTypeMapping TypeName="MedicalDBModel.APPOINTMENT">
               <MappingFragment StoreEntitySet="APPOINTMENT">
-                <ScalarProperty Name="date" ColumnName="date" />
-                <ScalarProperty Name="startSlotTime" ColumnName="startSlotTime" />
-                <ScalarProperty Name="endSlotTime" ColumnName="endSlotTime" />
-                <ScalarProperty Name="PATIENT_patientAMKA" ColumnName="PATIENT_patientAMKA" />
-                <ScalarProperty Name="DOCTOR_doctorAMKA" ColumnName="DOCTOR_doctorAMKA" />
                 <ScalarProperty Name="isAvailable" ColumnName="isAvailable" />
+                <ScalarProperty Name="DOCTOR_doctorAMKA" ColumnName="DOCTOR_doctorAMKA" />
+                <ScalarProperty Name="PATIENT_patientAMKA" ColumnName="PATIENT_patientAMKA" />
+                <ScalarProperty Name="endSlotTime" ColumnName="endSlotTime" />
+                <ScalarProperty Name="startSlotTime" ColumnName="startSlotTime" />
+                <ScalarProperty Name="date" ColumnName="date" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DOCTORs">
             <EntityTypeMapping TypeName="MedicalDBModel.DOCTOR">
               <MappingFragment StoreEntitySet="DOCTOR">
-                <ScalarProperty Name="doctorAMKA" ColumnName="doctorAMKA" />
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="surname" ColumnName="surname" />
-                <ScalarProperty Name="specialty" ColumnName="specialty" />
-                <ScalarProperty Name="hash" ColumnName="hash" />
                 <ScalarProperty Name="salt" ColumnName="salt" />
+                <ScalarProperty Name="hash" ColumnName="hash" />
+                <ScalarProperty Name="specialty" ColumnName="specialty" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="doctorAMKA" ColumnName="doctorAMKA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PATIENTs">
             <EntityTypeMapping TypeName="MedicalDBModel.PATIENT">
               <MappingFragment StoreEntitySet="PATIENT">
-                <ScalarProperty Name="patientAMKA" ColumnName="patientAMKA" />
-                <ScalarProperty Name="userid" ColumnName="userid" />
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="surname" ColumnName="surname" />
-                <ScalarProperty Name="hash" ColumnName="hash" />
-                <ScalarProperty Name="salt" ColumnName="salt" />
                 <ScalarProperty Name="role" ColumnName="role" />
+                <ScalarProperty Name="hash" ColumnName="hash" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="patientAMKA" ColumnName="patientAMKA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
             <EntityTypeMapping TypeName="MedicalDBModel.sysdiagram">
               <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
                 <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

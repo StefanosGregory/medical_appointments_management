@@ -1,63 +1,86 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="MedicalDBModelStoreContainer" CdmEntityContainer="MedicalDBEntities">
+    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="MedicalDBModel.Store.sp_alterdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="MedicalDBModel.Store.sp_creatediagram" />
+    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="MedicalDBModel.Store.sp_dropdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="MedicalDBModel.Store.sp_helpdiagramdefinition">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="MedicalDBModel.sp_helpdiagramdefinition_Result">
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="MedicalDBModel.Store.sp_helpdiagrams">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="MedicalDBModel.sp_helpdiagrams_Result">
+          <ScalarProperty Name="Database" ColumnName="Database" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Owner" ColumnName="Owner" />
+          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="MedicalDBModel.Store.sp_renamediagram" />
+    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="MedicalDBModel.Store.sp_upgraddiagrams" />
     <EntitySetMapping Name="ADMINs">
       <EntityTypeMapping TypeName="MedicalDBModel.ADMIN">
         <MappingFragment StoreEntitySet="ADMIN">
-          <ScalarProperty Name="userid" ColumnName="userid" />
-          <ScalarProperty Name="username" ColumnName="username" />
-          <ScalarProperty Name="hash" ColumnName="hash" />
           <ScalarProperty Name="salt" ColumnName="salt" />
+          <ScalarProperty Name="hash" ColumnName="hash" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="userid" ColumnName="userid" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="APPOINTMENTs">
       <EntityTypeMapping TypeName="MedicalDBModel.APPOINTMENT">
         <MappingFragment StoreEntitySet="APPOINTMENT">
-          <ScalarProperty Name="date" ColumnName="date" />
-          <ScalarProperty Name="startSlotTime" ColumnName="startSlotTime" />
-          <ScalarProperty Name="endSlotTime" ColumnName="endSlotTime" />
-          <ScalarProperty Name="PATIENT_patientAMKA" ColumnName="PATIENT_patientAMKA" />
-          <ScalarProperty Name="DOCTOR_doctorAMKA" ColumnName="DOCTOR_doctorAMKA" />
           <ScalarProperty Name="isAvailable" ColumnName="isAvailable" />
+          <ScalarProperty Name="DOCTOR_doctorAMKA" ColumnName="DOCTOR_doctorAMKA" />
+          <ScalarProperty Name="PATIENT_patientAMKA" ColumnName="PATIENT_patientAMKA" />
+          <ScalarProperty Name="endSlotTime" ColumnName="endSlotTime" />
+          <ScalarProperty Name="startSlotTime" ColumnName="startSlotTime" />
+          <ScalarProperty Name="date" ColumnName="date" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="DOCTORs">
       <EntityTypeMapping TypeName="MedicalDBModel.DOCTOR">
         <MappingFragment StoreEntitySet="DOCTOR">
-          <ScalarProperty Name="doctorAMKA" ColumnName="doctorAMKA" />
-          <ScalarProperty Name="username" ColumnName="username" />
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="surname" ColumnName="surname" />
-          <ScalarProperty Name="specialty" ColumnName="specialty" />
-          <ScalarProperty Name="hash" ColumnName="hash" />
           <ScalarProperty Name="salt" ColumnName="salt" />
+          <ScalarProperty Name="hash" ColumnName="hash" />
+          <ScalarProperty Name="specialty" ColumnName="specialty" />
+          <ScalarProperty Name="surname" ColumnName="surname" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="doctorAMKA" ColumnName="doctorAMKA" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="PATIENTs">
       <EntityTypeMapping TypeName="MedicalDBModel.PATIENT">
         <MappingFragment StoreEntitySet="PATIENT">
-          <ScalarProperty Name="patientAMKA" ColumnName="patientAMKA" />
-          <ScalarProperty Name="userid" ColumnName="userid" />
-          <ScalarProperty Name="username" ColumnName="username" />
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="surname" ColumnName="surname" />
-          <ScalarProperty Name="hash" ColumnName="hash" />
-          <ScalarProperty Name="salt" ColumnName="salt" />
           <ScalarProperty Name="role" ColumnName="role" />
+          <ScalarProperty Name="hash" ColumnName="hash" />
+          <ScalarProperty Name="surname" ColumnName="surname" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="userid" ColumnName="userid" />
+          <ScalarProperty Name="patientAMKA" ColumnName="patientAMKA" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="sysdiagrams">
       <EntityTypeMapping TypeName="MedicalDBModel.sysdiagram">
         <MappingFragment StoreEntitySet="sysdiagrams">
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-          <ScalarProperty Name="version" ColumnName="version" />
           <ScalarProperty Name="definition" ColumnName="definition" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

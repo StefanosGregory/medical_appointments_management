@@ -7,11 +7,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
+using MedicalAppointmentsManagement.MetadataModel;
+
 namespace MedicalAppointmentsManagement.Models
 {
     using System;
     using System.Collections.Generic;
-    
+
+    [MetadataType(typeof(PatientsMetadata))]
     public partial class PATIENT
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -26,7 +30,6 @@ namespace MedicalAppointmentsManagement.Models
         public string name { get; set; }
         public string surname { get; set; }
         public string hash { get; set; }
-        public string salt { get; set; }
         public string role { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

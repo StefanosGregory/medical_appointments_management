@@ -26,8 +26,7 @@ namespace MedicalAppointmentsManagement.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(PATIENT objUser)
         {
-            if (ModelState.IsValid)
-            {
+
                 using (MedicalDBEntities db = new MedicalDBEntities())
                 {
                     var obj = db.PATIENTs.Where(a => a.username.Equals(objUser.username) && a.hash.Equals(objUser.hash)).FirstOrDefault();
@@ -38,7 +37,7 @@ namespace MedicalAppointmentsManagement.Controllers
                         return RedirectToAction("Menu");
                     }
                 }
-            }
+
             return View(objUser);
         }
 
@@ -48,6 +47,7 @@ namespace MedicalAppointmentsManagement.Controllers
             if (Session["UserID"] != null)
             {
                 return View();
+
             }
             else
             {

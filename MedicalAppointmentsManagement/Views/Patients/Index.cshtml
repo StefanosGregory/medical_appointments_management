@@ -12,6 +12,9 @@
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.patientAMKA)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.userid)
         </th>
         <th>
@@ -27,9 +30,6 @@
             @Html.DisplayNameFor(model => model.hash)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.salt)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.role)
         </th>
         <th></th>
@@ -37,6 +37,9 @@
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.patientAMKA)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.userid)
         </td>
@@ -53,15 +56,12 @@
             @Html.DisplayFor(modelItem => item.hash)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.salt)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.role)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.patientAMKA }) |
-            @Html.ActionLink("Details", "Details", new { id=item.patientAMKA }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.patientAMKA })
+            @Html.ActionLink("Edit", "Edit", new {id = item.patientAMKA}) |
+            @Html.ActionLink("Details", "Details", new {id = item.patientAMKA}) |
+            @Html.ActionLink("Delete", "Delete", new {id = item.patientAMKA})
         </td>
     </tr>
 }
