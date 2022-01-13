@@ -87,8 +87,7 @@
     <Property Name="name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
     <Property Name="surname" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
     <Property Name="specialty" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="hash" Type="String" Nullable="false" MaxLength="512" FixedLength="true" Unicode="true" />
-    <Property Name="salt" Type="String" Nullable="false" MaxLength="512" FixedLength="true" Unicode="true" />
+    <Property Name="password" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="APPOINTMENTs" Relationship="MedicalDBModel.FK_APPOINTMENT_DOCTOR_AMKA" FromRole="DOCTOR" ToRole="APPOINTMENT" />
   </EntityType>
   <EntityType Name="PATIENT">
@@ -96,12 +95,11 @@
       <PropertyRef Name="patientAMKA" />
     </Key>
     <Property Name="patientAMKA" Type="Int32" Nullable="false" />
-    <Property Name="userid" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
     <Property Name="username" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
     <Property Name="name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
     <Property Name="surname" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="hash" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="true" />
-    <Property Name="role" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="true" />
+    <Property Name="role" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="APPOINTMENTs" Relationship="MedicalDBModel.FK_APPOINTMENT_PATIENT_AMKA" FromRole="PATIENT" ToRole="APPOINTMENT" />
   </EntityType>
   <EntityType Name="sysdiagram">

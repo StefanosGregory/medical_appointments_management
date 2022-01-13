@@ -15,12 +15,6 @@ namespace MedicalAppointmentsManagement.MetadataModel
         public int patientAMKA { get; set; }
 
 
-        [Display(Name = "ID")]
-        [Required]
-        [StringLength(1, ErrorMessage = "ID must be 1 characters!")]
-        public string userid { get; set; }
-
-
         [Display(Name = "Username")]
         [Required]
         [StringLength(45, MinimumLength = 4, ErrorMessage = "Username must be between 6-45 characters!")]
@@ -39,7 +33,7 @@ namespace MedicalAppointmentsManagement.MetadataModel
         [Display(Name = "Password")]
         [Required]
         [StringLength(45, MinimumLength = 6, ErrorMessage = "Password must be between 6-45 fill!")]
-        public string hash { get; set; }
+        public string password { get; set; }
 
         [Display(Name = "Role")]
         [Required]

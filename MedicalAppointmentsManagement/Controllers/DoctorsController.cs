@@ -10,40 +10,42 @@ using MedicalAppointmentsManagement.Models;
 
 namespace MedicalAppointmentsManagement.Controllers
 {
-    public class PatientsController : Controller
+    public class DoctorsController : Controller
     {
         private MedicalDBEntities db = new MedicalDBEntities();
 
+
         // Login
-        // GET: Patients/Login
+        // GET: Doctors/Login
         public ActionResult Login()
         {
             return View();
         }
 
-        // POST: Patients/Login
+        // POST: Doctors/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(PATIENT objUser)
+        public ActionResult Login(DOCTOR objUser)
         {
 
-                using (MedicalDBEntities db = new MedicalDBEntities())
+            using (MedicalDBEntities db = new MedicalDBEntities())
+            {
+                var obj = db.DOCTORs.Where(a => a.username.Equals(objUser.username) && a.password.Equals(objUser.password)).FirstOrDefault();
+                if (obj != null)
                 {
-                    var obj = db.PATIENTs.Where(a => a.username.Equals(objUser.username) && a.password.Equals(objUser.password)).FirstOrDefault();
-                    if (obj != null)
-                    {
-                        Session["UserAMKA"] = obj.patientAMKA.ToString();
-                        Session["UserName"] = obj.username.ToString();
-                        return RedirectToAction("Menu");
-                    }
+                    Session["doctorAMKA"] = obj.doctorAMKA.ToString();
+                    Session["UserName"] = obj.username.ToString();
+                    return RedirectToAction("Menu");
                 }
-                return View(objUser);
+            }
+
+            return View(objUser);
         }
 
-        // GET: Patients/Menu
+        // GET: Doctors/Menu
         public ActionResult Menu()
         {
-            if (Session["UserAMKA"] != null)
+            if (Session["doctorAMKA"] != null)
             {
                 return View();
 
@@ -58,110 +60,111 @@ namespace MedicalAppointmentsManagement.Controllers
 
         public ActionResult Logout()
         {
-            Session["UserID"] = null;
+            Session["doctorAMKA"] = null;
             Session["UserName"] = null;
             Session.Abandon();
             return Redirect("../Home");
         }
 
 
-        // GET: Patients
+        // GET: Doctors
         public ActionResult Index()
         {
-            return View(db.PATIENTs.ToList());
+            return View(db.DOCTORs.ToList());
         }
 
-        // GET: Patients/Details/5
+
+        // GET: Doctors/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PATIENT pATIENT = db.PATIENTs.Find(id);
-            if (pATIENT == null)
+            DOCTOR dOCTOR = db.DOCTORs.Find(id);
+            if (dOCTOR == null)
             {
                 return HttpNotFound();
             }
-            return View(pATIENT);
+            return View(dOCTOR);
         }
 
-        // GET: Patients/Create
+        // GET: Doctors/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Patients/Create
+        // POST: Doctors/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "patientAMKA,userid,username,name,surname,hash,salt,role")] PATIENT patient)
+        public ActionResult Create([Bind(Include = "doctorAMKA,username,name,surname,specialty,password")] DOCTOR dOCTOR)
         {
             if (ModelState.IsValid)
             {
-                db.PATIENTs.Add(patient);
+                db.DOCTORs.Add(dOCTOR);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(patient);
+            return View(dOCTOR);
         }
 
-        // GET: Patients/Edit/5
+        // GET: Doctors/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PATIENT pATIENT = db.PATIENTs.Find(id);
-            if (pATIENT == null)
+            DOCTOR dOCTOR = db.DOCTORs.Find(id);
+            if (dOCTOR == null)
             {
                 return HttpNotFound();
             }
-            return View(pATIENT);
+            return View(dOCTOR);
         }
 
-        // POST: Patients/Edit/5
+        // POST: Doctors/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "patientAMKA,userid,username,name,surname,hash,salt,role")] PATIENT pATIENT)
+        public ActionResult Edit([Bind(Include = "doctorAMKA,username,name,surname,specialty,password")] DOCTOR dOCTOR)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(pATIENT).State = EntityState.Modified;
+                db.Entry(dOCTOR).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(pATIENT);
+            return View(dOCTOR);
         }
 
-        // GET: Patients/Delete/5
+        // GET: Doctors/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PATIENT pATIENT = db.PATIENTs.Find(id);
-            if (pATIENT == null)
+            DOCTOR dOCTOR = db.DOCTORs.Find(id);
+            if (dOCTOR == null)
             {
                 return HttpNotFound();
             }
-            return View(pATIENT);
+            return View(dOCTOR);
         }
 
-        // POST: Patients/Delete/5
+        // POST: Doctors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            PATIENT pATIENT = db.PATIENTs.Find(id);
-            db.PATIENTs.Remove(pATIENT);
+            DOCTOR dOCTOR = db.DOCTORs.Find(id);
+            db.DOCTORs.Remove(dOCTOR);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -170,7 +173,7 @@ namespace MedicalAppointmentsManagement.Controllers
         {
             if (disposing)
             {
-                db.Dispose(); // Connections close
+                db.Dispose();
             }
             base.Dispose(disposing);
         }

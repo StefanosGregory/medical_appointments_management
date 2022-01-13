@@ -29,20 +29,18 @@
     <Property Name="name" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="surname" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="specialty" Type="varchar" MaxLength="45" Nullable="false" />
-    <Property Name="hash" Type="nchar" MaxLength="512" Nullable="false" />
-    <Property Name="salt" Type="nchar" MaxLength="512" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="45" Nullable="false" />
   </EntityType>
   <EntityType Name="PATIENT">
     <Key>
       <PropertyRef Name="patientAMKA" />
     </Key>
     <Property Name="patientAMKA" Type="int" Nullable="false" />
-    <Property Name="userid" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="username" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="name" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="surname" Type="varchar" MaxLength="45" Nullable="false" />
-    <Property Name="hash" Type="nvarchar" MaxLength="45" Nullable="false" />
-    <Property Name="role" Type="varchar" MaxLength="20" />
+    <Property Name="password" Type="nvarchar" MaxLength="45" Nullable="false" />
+    <Property Name="role" Type="varchar" MaxLength="20" Nullable="false" />
   </EntityType>
   <EntityType Name="sysdiagrams">
     <Key>

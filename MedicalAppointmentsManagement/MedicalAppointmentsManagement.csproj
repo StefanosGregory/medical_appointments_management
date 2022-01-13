@@ -123,7 +123,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\DoctorsController.cs" />
     <Compile Include="Controllers\PatientsController.cs" />
+    <Compile Include="MetadataModel\MetadataClasses.cs" />
     <Compile Include="MetadataModel\PatientsMetadata.cs" />
     <Compile Include="Models\ADMIN.cs">
       <DependentUpon>Model.tt</DependentUpon>
@@ -269,6 +271,13 @@
     <Content Include="Views\Patients\Index.cshtml" />
     <Content Include="Views\Patients\Login.cshtml" />
     <Content Include="Views\Patients\Menu.cshtml" />
+    <Content Include="Views\Doctors\Create.cshtml" />
+    <Content Include="Views\Doctors\Delete.cshtml" />
+    <Content Include="Views\Doctors\Details.cshtml" />
+    <Content Include="Views\Doctors\Edit.cshtml" />
+    <Content Include="Views\Doctors\Index.cshtml" />
+    <Content Include="Views\Doctors\Login.cshtml" />
+    <Content Include="Views\Doctors\Menu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

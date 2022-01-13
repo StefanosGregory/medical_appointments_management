@@ -16,7 +16,7 @@ namespace MedicalAppointmentsManagement.Models
     {
         public int userid { get; set; }
         public string username { get; set; }
-        public string hash { get; set; }
-        public string salt { get; set; }
+        public string password { get; set; }
+
     }
 }

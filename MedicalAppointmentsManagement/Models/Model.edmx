@@ -34,20 +34,18 @@
           <Property Name="name" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="surname" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="specialty" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="hash" Type="nchar" MaxLength="512" Nullable="false" />
-          <Property Name="salt" Type="nchar" MaxLength="512" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="45" Nullable="false" />
         </EntityType>
         <EntityType Name="PATIENT">
           <Key>
             <PropertyRef Name="patientAMKA" />
           </Key>
           <Property Name="patientAMKA" Type="int" Nullable="false" />
-          <Property Name="userid" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="username" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="surname" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="hash" Type="nvarchar" MaxLength="45" Nullable="false" />
-          <Property Name="role" Type="varchar" MaxLength="20" />
+          <Property Name="password" Type="nvarchar" MaxLength="45" Nullable="false" />
+          <Property Name="role" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -177,7 +175,7 @@
             <End Role="PATIENT" EntitySet="PATIENTs" />
             <End Role="APPOINTMENT" EntitySet="APPOINTMENTs" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -220,8 +218,7 @@
           <Property Name="name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="surname" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="specialty" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="hash" Type="String" Nullable="false" MaxLength="512" FixedLength="true" Unicode="true" />
-          <Property Name="salt" Type="String" Nullable="false" MaxLength="512" FixedLength="true" Unicode="true" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="APPOINTMENTs" Relationship="MedicalDBModel.FK_APPOINTMENT_DOCTOR_AMKA" FromRole="DOCTOR" ToRole="APPOINTMENT" />
         </EntityType>
         <EntityType Name="PATIENT">
@@ -229,12 +226,11 @@
             <PropertyRef Name="patientAMKA" />
           </Key>
           <Property Name="patientAMKA" Type="Int32" Nullable="false" />
-          <Property Name="userid" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="username" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="surname" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="hash" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="true" />
-          <Property Name="role" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="role" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="APPOINTMENTs" Relationship="MedicalDBModel.FK_APPOINTMENT_PATIENT_AMKA" FromRole="PATIENT" ToRole="APPOINTMENT" />
         </EntityType>
         <EntityType Name="sysdiagram">
@@ -271,7 +267,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -326,8 +322,7 @@
           <EntitySetMapping Name="DOCTORs">
             <EntityTypeMapping TypeName="MedicalDBModel.DOCTOR">
               <MappingFragment StoreEntitySet="DOCTOR">
-                <ScalarProperty Name="salt" ColumnName="salt" />
-                <ScalarProperty Name="hash" ColumnName="hash" />
+                <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="specialty" ColumnName="specialty" />
                 <ScalarProperty Name="surname" ColumnName="surname" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -340,11 +335,10 @@
             <EntityTypeMapping TypeName="MedicalDBModel.PATIENT">
               <MappingFragment StoreEntitySet="PATIENT">
                 <ScalarProperty Name="role" ColumnName="role" />
-                <ScalarProperty Name="hash" ColumnName="hash" />
+                <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="surname" ColumnName="surname" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="userid" ColumnName="userid" />
                 <ScalarProperty Name="patientAMKA" ColumnName="patientAMKA" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -360,7 +354,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

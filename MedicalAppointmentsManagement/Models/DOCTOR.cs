@@ -25,8 +25,7 @@ namespace MedicalAppointmentsManagement.Models
         public string name { get; set; }
         public string surname { get; set; }
         public string specialty { get; set; }
-        public string hash { get; set; }
-        public string salt { get; set; }
+        public string password { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<APPOINTMENT> APPOINTMENTs { get; set; }
