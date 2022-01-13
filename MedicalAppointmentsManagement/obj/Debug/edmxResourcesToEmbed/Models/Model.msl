@@ -28,8 +28,7 @@
     <EntitySetMapping Name="ADMINs">
       <EntityTypeMapping TypeName="MedicalDBModel.ADMIN">
         <MappingFragment StoreEntitySet="ADMIN">
-          <ScalarProperty Name="salt" ColumnName="salt" />
-          <ScalarProperty Name="hash" ColumnName="hash" />
+          <ScalarProperty Name="password" ColumnName="password" />
           <ScalarProperty Name="username" ColumnName="username" />
           <ScalarProperty Name="userid" ColumnName="userid" />
         </MappingFragment>

@@ -11,8 +11,7 @@
           </Key>
           <Property Name="userid" Type="int" Nullable="false" />
           <Property Name="username" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="hash" Type="nchar" MaxLength="512" Nullable="false" />
-          <Property Name="salt" Type="nchar" MaxLength="512" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="45" Nullable="false" />
         </EntityType>
         <EntityType Name="APPOINTMENT">
           <Key>
@@ -193,8 +192,7 @@
           </Key>
           <Property Name="userid" Type="Int32" Nullable="false" />
           <Property Name="username" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="hash" Type="String" Nullable="false" MaxLength="512" FixedLength="true" Unicode="true" />
-          <Property Name="salt" Type="String" Nullable="false" MaxLength="512" FixedLength="true" Unicode="true" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="APPOINTMENT">
           <Key>
@@ -300,8 +298,7 @@
           <EntitySetMapping Name="ADMINs">
             <EntityTypeMapping TypeName="MedicalDBModel.ADMIN">
               <MappingFragment StoreEntitySet="ADMIN">
-                <ScalarProperty Name="salt" ColumnName="salt" />
-                <ScalarProperty Name="hash" ColumnName="hash" />
+                <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="userid" ColumnName="userid" />
               </MappingFragment>

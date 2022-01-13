@@ -6,8 +6,7 @@
     </Key>
     <Property Name="userid" Type="int" Nullable="false" />
     <Property Name="username" Type="varchar" MaxLength="45" Nullable="false" />
-    <Property Name="hash" Type="nchar" MaxLength="512" Nullable="false" />
-    <Property Name="salt" Type="nchar" MaxLength="512" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="45" Nullable="false" />
   </EntityType>
   <EntityType Name="APPOINTMENT">
     <Key>

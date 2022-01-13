@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "Menu";
+}
+
+<h2>Menu</h2>
+
+
+<fieldset>
+    <legend> Admin DashBoard </legend>
+
+    @if (Session["UserName"] != null)
+    {
+        <text> Welcome @Session["UserName"].ToString() </text>  ;
+    }
+</fieldset>

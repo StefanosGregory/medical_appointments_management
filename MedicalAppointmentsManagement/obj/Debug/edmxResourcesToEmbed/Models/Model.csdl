@@ -62,8 +62,7 @@
     </Key>
     <Property Name="userid" Type="Int32" Nullable="false" />
     <Property Name="username" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="hash" Type="String" Nullable="false" MaxLength="512" FixedLength="true" Unicode="true" />
-    <Property Name="salt" Type="String" Nullable="false" MaxLength="512" FixedLength="true" Unicode="true" />
+    <Property Name="password" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="APPOINTMENT">
     <Key>
