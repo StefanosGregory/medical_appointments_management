@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MedicalDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ADMIN">
+    <Key>
+      <PropertyRef Name="userid" />
+    </Key>
+    <Property Name="userid" Type="Int32" Nullable="false" />
+    <Property Name="username" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="hash" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="salt" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="APPOINTMENT">
+    <Key>
+      <PropertyRef Name="date" />
+    </Key>
+    <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="startSlotTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="endSlotTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="PATIENT_patientAMKA" Type="Int32" Nullable="false" />
+    <Property Name="DOCTOR_doctorAMKA" Type="Int32" Nullable="false" />
+    <Property Name="isAvailable" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="DOCTOR" Relationship="Self.FK_APPOINTMENT_DOCTOR_AMKA" FromRole="APPOINTMENT" ToRole="DOCTOR" />
+    <NavigationProperty Name="PATIENT" Relationship="Self.FK_APPOINTMENT_PATIENT_AMKA" FromRole="APPOINTMENT" ToRole="PATIENT" />
+  </EntityType>
+  <EntityType Name="DOCTOR">
+    <Key>
+      <PropertyRef Name="doctorAMKA" />
+    </Key>
+    <Property Name="doctorAMKA" Type="Int32" Nullable="false" />
+    <Property Name="username" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="surname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="specialty" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="hash" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="salt" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="APPOINTMENTs" Relationship="Self.FK_APPOINTMENT_DOCTOR_AMKA" FromRole="DOCTOR" ToRole="APPOINTMENT" />
+  </EntityType>
+  <EntityType Name="PATIENT">
+    <Key>
+      <PropertyRef Name="patientAMKA" />
+    </Key>
+    <Property Name="patientAMKA" Type="Int32" Nullable="false" />
+    <Property Name="userid" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="username" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="surname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="hash" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="salt" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="role" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="APPOINTMENTs" Relationship="Self.FK_APPOINTMENT_PATIENT_AMKA" FromRole="PATIENT" ToRole="APPOINTMENT" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_APPOINTMENT_DOCTOR_AMKA">
+    <End Role="DOCTOR" Type="Self.DOCTOR" Multiplicity="1" />
+    <End Role="APPOINTMENT" Type="Self.APPOINTMENT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DOCTOR">
+        <PropertyRef Name="doctorAMKA" />
+      </Principal>
+      <Dependent Role="APPOINTMENT">
+        <PropertyRef Name="DOCTOR_doctorAMKA" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_APPOINTMENT_PATIENT_AMKA">
+    <End Role="PATIENT" Type="Self.PATIENT" Multiplicity="1" />
+    <End Role="APPOINTMENT" Type="Self.APPOINTMENT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PATIENT">
+        <PropertyRef Name="patientAMKA" />
+      </Principal>
+      <Dependent Role="APPOINTMENT">
+        <PropertyRef Name="PATIENT_patientAMKA" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MedicalDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ADMINs" EntityType="Self.ADMIN" />
+    <EntitySet Name="APPOINTMENTs" EntityType="Self.APPOINTMENT" />
+    <EntitySet Name="DOCTORs" EntityType="Self.DOCTOR" />
+    <EntitySet Name="PATIENTs" EntityType="Self.PATIENT" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK_APPOINTMENT_DOCTOR_AMKA" Association="Self.FK_APPOINTMENT_DOCTOR_AMKA">
+      <End Role="DOCTOR" EntitySet="DOCTORs" />
+      <End Role="APPOINTMENT" EntitySet="APPOINTMENTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_APPOINTMENT_PATIENT_AMKA" Association="Self.FK_APPOINTMENT_PATIENT_AMKA">
+      <End Role="PATIENT" EntitySet="PATIENTs" />
+      <End Role="APPOINTMENT" EntitySet="APPOINTMENTs" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
