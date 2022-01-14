@@ -14,6 +14,7 @@ namespace MedicalAppointmentsManagement.Models
 {
     using System;
     using System.Collections.Generic;
+
     [MetadataType(typeof(PatientsMetadata))]
     public partial class PATIENT
     {
@@ -28,7 +29,6 @@ namespace MedicalAppointmentsManagement.Models
         public string name { get; set; }
         public string surname { get; set; }
         public string password { get; set; }
-        public string role { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<APPOINTMENT> APPOINTMENTs { get; set; }

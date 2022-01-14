@@ -37,6 +37,7 @@ namespace MedicalAppointmentsManagement.Controllers
                         return RedirectToAction("Menu");
                     }
                 }
+                ViewData["Error"] = "Error";
                 return View(objUser);
         }
 
@@ -97,7 +98,7 @@ namespace MedicalAppointmentsManagement.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "patientAMKA,userid,username,name,surname,hash,salt,role")] PATIENT patient)
+        public ActionResult Create([Bind(Include = "patientAMKA,userid,username,name,surname,password")] PATIENT patient)
         {
             if (ModelState.IsValid)
             {
@@ -129,7 +130,7 @@ namespace MedicalAppointmentsManagement.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "patientAMKA,userid,username,name,surname,hash,salt,role")] PATIENT pATIENT)
+        public ActionResult Edit([Bind(Include = "patientAMKA,userid,username,name,surname,password")] PATIENT pATIENT)
         {
             if (ModelState.IsValid)
             {

@@ -1,4 +1,4 @@
-﻿@model MedicalAppointmentsManagement.Models.PATIENT
+﻿@model MedicalAppointmentsManagement.Models.DOCTOR
 
 @{
     ViewBag.Title = "Login";
@@ -21,6 +21,10 @@
                 <h1 class="display-6 pb-1">
                     Doctor
                 </h1>
+                @if (ViewData["Error"] != null)
+                {
+                    @Html.Partial("_StatusMessages")
+                }
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true)
                     <div class="mb-3">

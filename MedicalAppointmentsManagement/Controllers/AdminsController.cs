@@ -37,7 +37,7 @@ namespace MedicalAppointmentsManagement.Controllers
                     return RedirectToAction("Menu");
                 }
             }
-
+            ViewData["Error"] = "Error";
             return View(objUser);
         }
 

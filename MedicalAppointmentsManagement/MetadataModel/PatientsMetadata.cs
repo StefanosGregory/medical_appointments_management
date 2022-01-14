@@ -35,10 +35,6 @@ namespace MedicalAppointmentsManagement.MetadataModel
         [StringLength(45, MinimumLength = 6, ErrorMessage = "Password must be between 6-45 fill!")]
         public string password { get; set; }
 
-        [Display(Name = "Role")]
-        [Required]
-        [StringLength(45, ErrorMessage = "Password must be between 6-45 fill!")]
-        public string role { get; set; }
 
     }
 }

@@ -61,7 +61,6 @@
     <EntitySetMapping Name="PATIENTs">
       <EntityTypeMapping TypeName="MedicalDBModel.PATIENT">
         <MappingFragment StoreEntitySet="PATIENT">
-          <ScalarProperty Name="role" ColumnName="role" />
           <ScalarProperty Name="password" ColumnName="password" />
           <ScalarProperty Name="surname" ColumnName="surname" />
           <ScalarProperty Name="name" ColumnName="name" />

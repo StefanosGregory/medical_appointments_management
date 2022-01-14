@@ -20,6 +20,10 @@
                 <h1 class="display-6 pb-1">
                     Admin
                 </h1>
+                @if (ViewData["Error"] != null)
+                {
+                    @Html.Partial("_StatusMessages")
+                }
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true)
                     <div class="mb-3">

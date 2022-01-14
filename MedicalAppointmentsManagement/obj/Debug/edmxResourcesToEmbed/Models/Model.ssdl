@@ -39,7 +39,6 @@
     <Property Name="name" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="surname" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="password" Type="nvarchar" MaxLength="45" Nullable="false" />
-    <Property Name="role" Type="varchar" MaxLength="20" Nullable="false" />
   </EntityType>
   <EntityType Name="sysdiagrams">
     <Key>

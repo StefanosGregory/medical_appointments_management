@@ -98,7 +98,6 @@
     <Property Name="name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
     <Property Name="surname" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
     <Property Name="password" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="true" />
-    <Property Name="role" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="APPOINTMENTs" Relationship="MedicalDBModel.FK_APPOINTMENT_PATIENT_AMKA" FromRole="PATIENT" ToRole="APPOINTMENT" />
   </EntityType>
   <EntityType Name="sysdiagram">
