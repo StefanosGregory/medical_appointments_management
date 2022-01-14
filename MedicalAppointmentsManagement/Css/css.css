@@ -1,0 +1,10 @@
+#drop { background-color: black;}
+#drop :hover { background-color: #353535;}
+
+body {
+    background-color: black;
+ }
+
+p {
+    text-align: justify;
+}
