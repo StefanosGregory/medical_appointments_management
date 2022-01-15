@@ -38,11 +38,12 @@
       <EntityTypeMapping TypeName="MedicalDBModel.APPOINTMENT">
         <MappingFragment StoreEntitySet="APPOINTMENT">
           <ScalarProperty Name="isAvailable" ColumnName="isAvailable" />
-          <ScalarProperty Name="DOCTOR_doctorAMKA" ColumnName="DOCTOR_doctorAMKA" />
-          <ScalarProperty Name="PATIENT_patientAMKA" ColumnName="PATIENT_patientAMKA" />
+          <ScalarProperty Name="DOCTOR_username" ColumnName="DOCTOR_username" />
+          <ScalarProperty Name="PATIENT_patient" ColumnName="PATIENT_patient" />
           <ScalarProperty Name="endSlotTime" ColumnName="endSlotTime" />
           <ScalarProperty Name="startSlotTime" ColumnName="startSlotTime" />
           <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="id" ColumnName="id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

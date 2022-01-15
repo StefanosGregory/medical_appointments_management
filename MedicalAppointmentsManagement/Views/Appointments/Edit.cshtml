@@ -4,69 +4,61 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
-
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>APPOINTMENT</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.date)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.startSlotTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.startSlotTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.startSlotTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.endSlotTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.endSlotTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.endSlotTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PATIENT_patientAMKA, "PATIENT_patientAMKA", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("PATIENT_patientAMKA", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.PATIENT_patientAMKA, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DOCTOR_doctorAMKA, "DOCTOR_doctorAMKA", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("DOCTOR_doctorAMKA", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.DOCTOR_doctorAMKA, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.isAvailable, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.isAvailable)
-                    @Html.ValidationMessageFor(model => model.isAvailable, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
+@* Label *@
+<div class="row">
+    <div class="col-md-6 col-9 col-xl-4 mx-auto">
+        <h1 class="display-5">Edit</h1>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
+
+
+@using (Html.BeginForm()) 
+{
+
+    @* Edit *@
+    <div class="row">
+        <div class="col-md-6 col-9 col-xl-4 mx-auto">
+            <div class="border border-dark bg-dark rounded p-2">
+                <h1 class="display-6 pb-1">
+                    Appointment
+                </h1>
+                @if (ViewData["Error"] != null)
+                {
+                    @Html.Partial("_StatusMessages")
+                }
+                <div id="emailHelp" class="form-text">Remember time is money.. Be sure for your appointment!</div>
+                <div id="emailHelp" class="form-text">Working hours: 09:00 am - 08:00 pm</div>
+
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.date, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
+                </div>
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.startSlotTime, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.startSlotTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.startSlotTime, "", new { @class = "text-danger" })
+                </div>
+                <div class="mb-3">
+                    @if (Session["UserAMKA"] == null)
+                    {
+                        @Html.LabelFor(model => model.PATIENT_patient, htmlAttributes: new { @class = "form-label" })
+                        @Html.DropDownList("PATIENT_patient", (SelectList)ViewBag.PATIENT_patient, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PATIENT_patient, "", new { @class = "text-danger" })
+                    }
+                    @if (Session["doctorAMKA"] == null)
+                    {
+                        @Html.LabelFor(model => model.DOCTOR_username, htmlAttributes: new { @class = "form-label" })
+                        @Html.DropDownList("DOCTOR_username", (SelectList)ViewBag.DOCTOR_username, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.DOCTOR_username, "", new { @class = "text-danger" })
+                    }
+                </div>
+                <button type="submit" class="btn btn-outline-primary">Save</button><br />
+                @Html.ActionLink("Cancel", "Index")
+            </div>
+        </div>
+    </div><br>
+}

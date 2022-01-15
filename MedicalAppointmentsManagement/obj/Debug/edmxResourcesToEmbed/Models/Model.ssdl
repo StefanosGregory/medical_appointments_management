@@ -10,13 +10,14 @@
   </EntityType>
   <EntityType Name="APPOINTMENT">
     <Key>
-      <PropertyRef Name="date" />
+      <PropertyRef Name="id" />
     </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="date" Type="date" Nullable="false" />
     <Property Name="startSlotTime" Type="datetime" Nullable="false" />
     <Property Name="endSlotTime" Type="datetime" Nullable="false" />
-    <Property Name="PATIENT_patientAMKA" Type="int" Nullable="false" />
-    <Property Name="DOCTOR_doctorAMKA" Type="int" Nullable="false" />
+    <Property Name="PATIENT_patient" Type="int" />
+    <Property Name="DOCTOR_username" Type="int" Nullable="false" />
     <Property Name="isAvailable" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="DOCTOR">
@@ -58,19 +59,19 @@
         <PropertyRef Name="doctorAMKA" />
       </Principal>
       <Dependent Role="APPOINTMENT">
-        <PropertyRef Name="DOCTOR_doctorAMKA" />
+        <PropertyRef Name="DOCTOR_username" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_APPOINTMENT_PATIENT_AMKA">
-    <End Role="PATIENT" Type="Self.PATIENT" Multiplicity="1" />
+    <End Role="PATIENT" Type="Self.PATIENT" Multiplicity="0..1" />
     <End Role="APPOINTMENT" Type="Self.APPOINTMENT" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="PATIENT">
         <PropertyRef Name="patientAMKA" />
       </Principal>
       <Dependent Role="APPOINTMENT">
-        <PropertyRef Name="PATIENT_patientAMKA" />
+        <PropertyRef Name="PATIENT_patient" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

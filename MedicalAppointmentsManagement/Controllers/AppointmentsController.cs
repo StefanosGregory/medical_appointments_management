@@ -17,12 +17,28 @@ namespace MedicalAppointmentsManagement.Controllers
         // GET: Appointments
         public ActionResult Index()
         {
-            var aPPOINTMENTs = db.APPOINTMENTs.Include(a => a.DOCTOR).Include(a => a.PATIENT);
-            return View(aPPOINTMENTs.ToList());
+            var appointments = db.APPOINTMENTs.Include(a => a.DOCTOR).Include(a => a.PATIENT).OrderBy(s => s.date);
+
+            if (Session["UserAMKA"] != null)
+            {
+                int amka = Convert.ToInt32(Session["UserAMKA"]);
+                appointments = appointments.Where(x => x.PATIENT_patient == amka).OrderBy(s => s.date);
+                return View(appointments.ToList());
+            }
+            else if (Session["doctorAMKA"] != null)
+            {
+                int amka = Convert.ToInt32(Session["doctorAMKA"]);
+                appointments = appointments.Where(x => x.DOCTOR_username == amka).OrderBy(s => s.date);
+                return View(appointments.ToList());
+            }
+            else
+            {
+                return View(appointments.ToList());
+            }
         }
 
         // GET: Appointments/Details/5
-        public ActionResult Details(DateTime id)
+        public ActionResult Details(int id)
         {
             if (id == null)
             {
@@ -39,9 +55,30 @@ namespace MedicalAppointmentsManagement.Controllers
         // GET: Appointments/Create
         public ActionResult Create()
         {
-            ViewBag.DOCTOR_doctorAMKA = new SelectList(db.DOCTORs, "doctorAMKA", "username");
-            ViewBag.PATIENT_patientAMKA = new SelectList(db.PATIENTs, "patientAMKA", "username");
+            SelectListSet();
             return View();
+        }
+
+        private void SelectListSet()
+        {
+            var doctors = db.DOCTORs
+                .Select(s => new
+                {
+                    Text = s.name + " " + s.surname,
+                    Value = s.doctorAMKA
+                })
+                .ToList();
+
+            var patients = db.PATIENTs
+                .Select(s => new
+                {
+                    Text = s.name + " " + s.surname,
+                    Value = s.patientAMKA
+                })
+                .ToList();
+
+            ViewBag.DOCTOR_username = new SelectList(doctors, "Value", "Text");
+            ViewBag.PATIENT_patient = new SelectList(patients, "Value", "Text");
         }
 
         // POST: Appointments/Create
@@ -49,22 +86,58 @@ namespace MedicalAppointmentsManagement.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "date,startSlotTime,endSlotTime,PATIENT_patientAMKA,DOCTOR_doctorAMKA,isAvailable")] APPOINTMENT aPPOINTMENT)
+        public ActionResult Create([Bind(Include = "date,startSlotTime,endSlotTime,PATIENT_patient,DOCTOR_username,isAvailable")] APPOINTMENT appointment)
         {
-            if (ModelState.IsValid)
+            if ((appointment.date < DateTime.Today)|| (appointment.date == DateTime.Today && appointment.startSlotTime <= DateTime.Now))
             {
-                db.APPOINTMENTs.Add(aPPOINTMENT);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                ViewData["Error"] = "Please select valid day!";
+                SelectListSet();
+                return View();
             }
 
-            ViewBag.DOCTOR_doctorAMKA = new SelectList(db.DOCTORs, "doctorAMKA", "username", aPPOINTMENT.DOCTOR_doctorAMKA);
-            ViewBag.PATIENT_patientAMKA = new SelectList(db.PATIENTs, "patientAMKA", "username", aPPOINTMENT.PATIENT_patientAMKA);
-            return View(aPPOINTMENT);
+            if (appointment.startSlotTime > Convert.ToDateTime("20:00:00") || appointment.startSlotTime < Convert.ToDateTime("09:00:00"))
+            {
+                ViewData["Error"] = "Please select working hours!";
+                SelectListSet();
+                return View();
+            }
+
+            appointment.endSlotTime = appointment.startSlotTime.AddHours(1);
+
+
+            if (Session["UserAMKA"] != null)
+            { 
+                appointment.PATIENT_patient = Convert.ToInt32(Session["UserAMKA"]);
+            }
+            else if (Session["doctorAMKA"] != null)
+            {
+                appointment.DOCTOR_username = Convert.ToInt32(Session["doctorAMKA"]);
+            }
+            
+
+            if (ModelState.IsValid)
+            {
+                if (db.APPOINTMENTs.Where(x =>
+                        x.startSlotTime == appointment.startSlotTime && x.date == appointment.date &&
+                        x.DOCTOR_username == appointment.DOCTOR_username).FirstOrDefault() == null)
+                {
+                    db.APPOINTMENTs.Add(appointment);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+
+                ViewData["Error"] = "This time doctor is busy!";
+                SelectListSet();
+                return View();
+
+            }
+            ViewData["Error"] = "Check your inputs!";
+            SelectListSet();
+            return View(appointment);
         }
 
         // GET: Appointments/Edit/5
-        public ActionResult Edit(DateTime id)
+        public ActionResult Edit(int id)
         {
             if (id == null)
             {
@@ -75,8 +148,8 @@ namespace MedicalAppointmentsManagement.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DOCTOR_doctorAMKA = new SelectList(db.DOCTORs, "doctorAMKA", "username", aPPOINTMENT.DOCTOR_doctorAMKA);
-            ViewBag.PATIENT_patientAMKA = new SelectList(db.PATIENTs, "patientAMKA", "username", aPPOINTMENT.PATIENT_patientAMKA);
+
+            SelectListSet();
             return View(aPPOINTMENT);
         }
 
@@ -85,27 +158,53 @@ namespace MedicalAppointmentsManagement.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "date,startSlotTime,endSlotTime,PATIENT_patientAMKA,DOCTOR_doctorAMKA,isAvailable")] APPOINTMENT aPPOINTMENT)
+        public ActionResult Edit([Bind(Include = "id,date,startSlotTime,endSlotTime,PATIENT_patient,DOCTOR_username,isAvailable")] APPOINTMENT appointment)
         {
+            if ((appointment.date < DateTime.Today) || (appointment.date == DateTime.Today && appointment.startSlotTime <= DateTime.Now))
+            {
+                ViewData["Error"] = "Please select valid day!";
+                SelectListSet();
+                return View();
+            }
+
+            if (appointment.startSlotTime > Convert.ToDateTime("20:00:00") || appointment.startSlotTime < Convert.ToDateTime("09:00:00"))
+            {
+                ViewData["Error"] = "Please select working hours!";
+                SelectListSet();
+                return View();
+            }
+
+            appointment.endSlotTime = appointment.startSlotTime.AddHours(1);
+
+            if (Session["UserAMKA"] != null)
+            {
+                appointment.PATIENT_patient = Convert.ToInt32(Session["UserAMKA"]);
+            }
+            else if (Session["doctorAMKA"] != null)
+            {
+                appointment.DOCTOR_username = Convert.ToInt32(Session["doctorAMKA"]);
+            }
+
             if (ModelState.IsValid)
             {
-                db.Entry(aPPOINTMENT).State = EntityState.Modified;
+                db.Entry(appointment).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.DOCTOR_doctorAMKA = new SelectList(db.DOCTORs, "doctorAMKA", "username", aPPOINTMENT.DOCTOR_doctorAMKA);
-            ViewBag.PATIENT_patientAMKA = new SelectList(db.PATIENTs, "patientAMKA", "username", aPPOINTMENT.PATIENT_patientAMKA);
-            return View(aPPOINTMENT);
+            ViewData["Error"] = "Please check your inputs!";
+            SelectListSet();
+            return View(appointment);
         }
 
         // GET: Appointments/Delete/5
-        public ActionResult Delete(DateTime id)
+        public ActionResult Delete(int id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             APPOINTMENT aPPOINTMENT = db.APPOINTMENTs.Find(id);
+
             if (aPPOINTMENT == null)
             {
                 return HttpNotFound();
@@ -116,7 +215,7 @@ namespace MedicalAppointmentsManagement.Controllers
         // POST: Appointments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(DateTime id)
+        public ActionResult DeleteConfirmed(int id)
         {
             APPOINTMENT aPPOINTMENT = db.APPOINTMENTs.Find(id);
             db.APPOINTMENTs.Remove(aPPOINTMENT);

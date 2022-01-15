@@ -37,7 +37,7 @@ namespace MedicalAppointmentsManagement.Controllers
                         return RedirectToAction("Menu");
                     }
                 }
-                ViewData["Error"] = "Error";
+                ViewData["Error"] = "Please check your email and password!";
                 return View(objUser);
         }
 

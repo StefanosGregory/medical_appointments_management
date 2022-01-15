@@ -66,13 +66,14 @@
   </EntityType>
   <EntityType Name="APPOINTMENT">
     <Key>
-      <PropertyRef Name="date" />
+      <PropertyRef Name="id" />
     </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="startSlotTime" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="endSlotTime" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="PATIENT_patientAMKA" Type="Int32" Nullable="false" />
-    <Property Name="DOCTOR_doctorAMKA" Type="Int32" Nullable="false" />
+    <Property Name="PATIENT_patient" Type="Int32" />
+    <Property Name="DOCTOR_username" Type="Int32" Nullable="false" />
     <Property Name="isAvailable" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="DOCTOR" Relationship="MedicalDBModel.FK_APPOINTMENT_DOCTOR_AMKA" FromRole="APPOINTMENT" ToRole="DOCTOR" />
     <NavigationProperty Name="PATIENT" Relationship="MedicalDBModel.FK_APPOINTMENT_PATIENT_AMKA" FromRole="APPOINTMENT" ToRole="PATIENT" />
@@ -118,19 +119,19 @@
         <PropertyRef Name="doctorAMKA" />
       </Principal>
       <Dependent Role="APPOINTMENT">
-        <PropertyRef Name="DOCTOR_doctorAMKA" />
+        <PropertyRef Name="DOCTOR_username" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_APPOINTMENT_PATIENT_AMKA">
-    <End Type="MedicalDBModel.PATIENT" Role="PATIENT" Multiplicity="1" />
+    <End Type="MedicalDBModel.PATIENT" Role="PATIENT" Multiplicity="0..1" />
     <End Type="MedicalDBModel.APPOINTMENT" Role="APPOINTMENT" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="PATIENT">
         <PropertyRef Name="patientAMKA" />
       </Principal>
       <Dependent Role="APPOINTMENT">
-        <PropertyRef Name="PATIENT_patientAMKA" />
+        <PropertyRef Name="PATIENT_patient" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

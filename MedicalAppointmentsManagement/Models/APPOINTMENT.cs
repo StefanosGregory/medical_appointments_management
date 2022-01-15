@@ -7,6 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
+
 namespace MedicalAppointmentsManagement.Models
 {
     using System;
@@ -14,11 +16,30 @@ namespace MedicalAppointmentsManagement.Models
     
     public partial class APPOINTMENT
     {
+        public int id { get; set; }
+
+        [Display(Name = "Date for Appointment")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime date { get; set; }
+
+        [Display(Name = "Time")]
+        [DataType(DataType.Time)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:H:mm}")]
         public System.DateTime startSlotTime { get; set; }
+
+        [Display(Name = "End time")]
+        [DataType(DataType.Time)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:H:mm}")]
         public System.DateTime endSlotTime { get; set; }
-        public int PATIENT_patientAMKA { get; set; }
-        public int DOCTOR_doctorAMKA { get; set; }
+
+        [Display(Name = "Patient")]
+        public Nullable<int> PATIENT_patient { get; set; }
+
+        [Display(Name = "Doctor")]
+        public int DOCTOR_username { get; set; }
+
+        [Display(Name = "Is available?")]
         public bool isAvailable { get; set; }
     
         public virtual DOCTOR DOCTOR { get; set; }

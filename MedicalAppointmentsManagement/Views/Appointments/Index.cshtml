@@ -4,60 +4,106 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+@* Label *@
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <h1 class="display-5">Appointments</h1>
+    </div>
+</div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.startSlotTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.endSlotTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.isAvailable)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DOCTOR.username)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PATIENT.username)
-        </th>
-        <th></th>
-    </tr>
+@* Table *@
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="border border-dark bg-dark rounded p-2">
+                <h1 class="display-6 pb-1">
+                    History
+                </h1>
+            <table class="table table-dark table-striped">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.date)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.startSlotTime)
+                    </th>
+                    @if (Session["UserAMKA"] == null)
+                    {
+                        <th>
+                            @Html.DisplayNameFor(model => model.PATIENT.name)
+                        </th>
+                    }
+                    @if (Session["doctorAMKA"] == null)
+                    {
+                        <th>
+                            Doctor
+                        </th>
+                        <th>
+                            Specialty
+                        </th>
+                    }
+                    <th></th>
+                </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <th>
-            @Html.DisplayFor(modelItem => item.date)
-        </th>
-        <td>
-            @Html.DisplayFor(modelItem => item.startSlotTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.endSlotTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.isAvailable)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DOCTOR.username)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PATIENT.username)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new {id = item.date}) |
-            @Html.ActionLink("Details", "Details", new {id = item.date}) |
-            @Html.ActionLink("Delete", "Delete", new {id = item.date})
-        </td>
-    </tr>
-}
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th>
+                            @Html.DisplayFor(modelItem => item.date)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.startSlotTime)
+                        </td>
+                        @if (Session["UserAMKA"] == null)
+                        {
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PATIENT.name)
+                            </td>
+                        }
+                        @if (Session["doctorAMKA"] == null)
+                        {
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DOCTOR.name) @Html.DisplayFor(modelItem =>
+                        item.DOCTOR.surname)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DOCTOR.specialty)
+                            </td>
+                        }
 
-</table>
+                        <td>
+                        @if ((item.date < DateTime.Today)|| (item.date == DateTime.Today && item.startSlotTime <= DateTime.Now))
+                        {
+                            <h class="pe-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray"
+                                class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                    <path
+                                    d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+                                </svg>
+                            </h>
+                        }else{
+                                <a class="text-decoration-none pe-1" href="../Appointments/Edit/@item.id">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                    <path
+                                    d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+                                </svg>
+                            </a>
+                        }
+                            <a class="text-decoration-none text-danger" href="../Appointments/Delete/@item.id">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-x-lg" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                    d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                                    <path fill-rule="evenodd"
+                                    d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+            <a href="/Appointments/Create" role="button" class="btn btn-outline-primary">Create new</a><br/>
+        </div>
+    </div>
+</div><br>
