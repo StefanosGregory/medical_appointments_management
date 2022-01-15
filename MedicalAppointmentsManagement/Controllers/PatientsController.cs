@@ -59,7 +59,7 @@ namespace MedicalAppointmentsManagement.Controllers
 
         public ActionResult Logout()
         {
-            Session["UserID"] = null;
+            Session["UserAMKA"] = null;
             Session["UserName"] = null;
             Session.Abandon();
             return Redirect("../Home");
@@ -130,15 +130,16 @@ namespace MedicalAppointmentsManagement.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "patientAMKA,userid,username,name,surname,password")] PATIENT pATIENT)
+        public ActionResult Edit([Bind(Include = "patientAMKA,userid,username,name,surname,password")] PATIENT patient)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(pATIENT).State = EntityState.Modified;
+                db.Entry(patient).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(pATIENT);
+            ViewData["Error"] = "Please check your infos!";
+            return View(patient);
         }
 
         // GET: Patients/Delete/5
