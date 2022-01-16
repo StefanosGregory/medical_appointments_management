@@ -132,15 +132,15 @@ namespace MedicalAppointmentsManagement.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "doctorAMKA,username,name,surname,specialty,password")] DOCTOR dOCTOR)
+        public ActionResult Edit([Bind(Include = "doctorAMKA,username,name,surname,specialty,password")] DOCTOR doctor)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(dOCTOR).State = EntityState.Modified;
+                db.Entry(doctor).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return Redirect("~/Doctors/Details/"+doctor.doctorAMKA);
             }
-            return View(dOCTOR);
+            return View(doctor);
         }
 
         // GET: Doctors/Delete/5

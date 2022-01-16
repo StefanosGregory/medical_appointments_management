@@ -19,9 +19,9 @@
         <div class="col-md-6 col-9 col-xl-4 mx-auto">
             <div class="border border-dark bg-dark rounded p-2">
                 <h1 class="display-6 pb-1">
-                  @Model.username Profile
+                    @Model.username Profile
                 </h1>
-                 @if (ViewData["Error"] != null)
+                @if (ViewData["Error"] != null)
                 {
                     @Html.Partial("_StatusMessages")
                 }
@@ -54,8 +54,8 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <button type="submit" class="btn btn-outline-primary">Save</button><br/>
-                            <a href="../Details/@Model.patientAMKA">Cancel</a><br/>
+                            <button type="submit" class="btn btn-outline-primary">Save</button><br />
+                            <a href="../Details/@Model.patientAMKA">Cancel</a><br />
                         </div>
                     </div>
                 </div>

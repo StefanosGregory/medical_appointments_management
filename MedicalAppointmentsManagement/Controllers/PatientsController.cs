@@ -136,7 +136,7 @@ namespace MedicalAppointmentsManagement.Controllers
             {
                 db.Entry(patient).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return Redirect("~/Patients/Details/" + patient.patientAMKA);
             }
             ViewData["Error"] = "Please check your infos!";
             return View(patient);
