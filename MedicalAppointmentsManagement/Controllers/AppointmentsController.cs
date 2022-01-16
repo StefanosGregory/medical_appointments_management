@@ -31,15 +31,24 @@ namespace MedicalAppointmentsManagement.Controllers
                 appointments = appointments.Where(x => x.DOCTOR_username == amka).OrderBy(s => s.date);
                 return View(appointments.ToList());
             }
-            else
+            else if (Session["admin"] != null)
             {
                 return View(appointments.ToList());
             }
+
+            return Redirect("~/Home");
         }
 
         // GET: Appointments/Details/5
         public ActionResult Details(int id)
         {
+
+
+            if (Session["UserAMKA"] == null && Session["doctorAMKA"] == null && Session["admin"] != null)
+            {
+                return Redirect("~/Home");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -55,6 +64,10 @@ namespace MedicalAppointmentsManagement.Controllers
         // GET: Appointments/Create
         public ActionResult Create()
         {
+            if (Session["UserAMKA"] == null && Session["doctorAMKA"] == null && Session["admin"] != null)
+            {
+                return Redirect("~/Home");
+            }
             SelectListSet();
             return View();
         }
@@ -88,6 +101,11 @@ namespace MedicalAppointmentsManagement.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "date,startSlotTime,endSlotTime,PATIENT_patient,DOCTOR_username,isAvailable")] APPOINTMENT appointment)
         {
+            if (Session["UserAMKA"] == null && Session["doctorAMKA"] == null && Session["admin"] != null)
+            {
+                return Redirect("~/Home");
+            }
+
             if ((appointment.date < DateTime.Today)|| (appointment.date == DateTime.Today && appointment.startSlotTime <= DateTime.Now))
             {
                 ViewData["Error"] = "Please select valid day!";
@@ -139,6 +157,11 @@ namespace MedicalAppointmentsManagement.Controllers
         // GET: Appointments/Edit/5
         public ActionResult Edit(int id)
         {
+            if (Session["UserAMKA"] == null && Session["doctorAMKA"] == null && Session["admin"] == null)
+            {
+                return Redirect("~/Home");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -160,6 +183,11 @@ namespace MedicalAppointmentsManagement.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "id,date,startSlotTime,endSlotTime,PATIENT_patient,DOCTOR_username,isAvailable")] APPOINTMENT appointment)
         {
+            if (Session["UserAMKA"] == null && Session["doctorAMKA"] == null && Session["admin"] == null)
+            {
+                return Redirect("~/Home");
+            }
+
             if ((appointment.date < DateTime.Today) || (appointment.date == DateTime.Today && appointment.startSlotTime <= DateTime.Now))
             {
                 ViewData["Error"] = "Please select valid day!";
@@ -199,6 +227,11 @@ namespace MedicalAppointmentsManagement.Controllers
         // GET: Appointments/Delete/5
         public ActionResult Delete(int id)
         {
+            if (Session["UserAMKA"] == null && Session["doctorAMKA"] == null && Session["admin"] == null)
+            {
+                return Redirect("~/Home");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -217,6 +250,11 @@ namespace MedicalAppointmentsManagement.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (Session["UserAMKA"] == null && Session["doctorAMKA"] == null && Session["admin"] == null)
+            {
+                return Redirect("~/Home");
+            }
+
             APPOINTMENT aPPOINTMENT = db.APPOINTMENTs.Find(id);
             db.APPOINTMENTs.Remove(aPPOINTMENT);
             db.SaveChanges();

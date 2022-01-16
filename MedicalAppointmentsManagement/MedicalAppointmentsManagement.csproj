@@ -295,6 +295,7 @@
     <Content Include="Views\Shared\_StatusMessages.cshtml" />
     <Content Include="Views\Shared\_PatientNav.cshtml" />
     <Content Include="Views\Shared\_DoctorNav.cshtml" />
+    <Content Include="Views\Shared\_AdminNav.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

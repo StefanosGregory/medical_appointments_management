@@ -33,6 +33,7 @@ namespace MedicalAppointmentsManagement.Controllers
                 var obj = db.ADMINs.Where(a => a.username.Equals(objUser.username) && a.password.Equals(objUser.password)).FirstOrDefault();
                 if (obj != null)
                 {
+                    Session["admin"] = obj.userid.ToString();
                     Session["UserName"] = obj.username.ToString();
                     return RedirectToAction("Menu");
                 }
@@ -44,7 +45,7 @@ namespace MedicalAppointmentsManagement.Controllers
         // GET: Admins/Menu
         public ActionResult Menu()
         {
-            if (Session["UserName"] != null)
+            if (Session["admin"] != null)
             {
                 return View();
 
@@ -59,6 +60,7 @@ namespace MedicalAppointmentsManagement.Controllers
 
         public ActionResult Logout()
         {
+            Session["admin"] = null;
             Session["UserName"] = null;
             Session.Abandon();
             return Redirect("../Home");
@@ -66,7 +68,7 @@ namespace MedicalAppointmentsManagement.Controllers
 
 
 
-
+        /*
         // GET: Admins
         public ActionResult Index()
         {
@@ -166,7 +168,7 @@ namespace MedicalAppointmentsManagement.Controllers
             db.ADMINs.Remove(aDMIN);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
+        } */
 
         protected override void Dispose(bool disposing)
         {

@@ -45,15 +45,11 @@ namespace MedicalAppointmentsManagement.Controllers
         // GET: Doctors/Menu
         public ActionResult Menu()
         {
-            if (Session["doctorAMKA"] != null)
-            {
-                return View();
-
-            }
-            else
+            if (Session["doctorAMKA"] == null)
             {
                 return RedirectToAction("Login");
             }
+            return View();
         }
 
         //Logout
@@ -66,17 +62,22 @@ namespace MedicalAppointmentsManagement.Controllers
             return Redirect("../Home");
         }
 
-
+        /*
         // GET: Doctors
         public ActionResult Index()
         {
             return View(db.DOCTORs.ToList());
-        }
+        }*/
 
 
         // GET: Doctors/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["doctorAMKA"] == null)
+            {
+                return RedirectToAction("Login");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -89,6 +90,7 @@ namespace MedicalAppointmentsManagement.Controllers
             return View(dOCTOR);
         }
 
+        /*
         // GET: Doctors/Create
         public ActionResult Create()
         {
@@ -110,11 +112,16 @@ namespace MedicalAppointmentsManagement.Controllers
             }
 
             return View(dOCTOR);
-        }
+        }*/
 
         // GET: Doctors/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["doctorAMKA"] == null || !Session["doctorAMKA"].ToString().Equals(id.ToString()))
+            {
+                return RedirectToAction("Login");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -134,6 +141,11 @@ namespace MedicalAppointmentsManagement.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "doctorAMKA,username,name,surname,specialty,password")] DOCTOR doctor)
         {
+            if (Session["doctorAMKA"] == null || !Session["doctorAMKA"].ToString().Equals(doctor.doctorAMKA.ToString()))
+            {
+                return RedirectToAction("Login");
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(doctor).State = EntityState.Modified;
@@ -143,9 +155,15 @@ namespace MedicalAppointmentsManagement.Controllers
             return View(doctor);
         }
 
+        /*
         // GET: Doctors/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["doctorAMKA"] == null)
+            {
+                return RedirectToAction("Login");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -167,7 +185,7 @@ namespace MedicalAppointmentsManagement.Controllers
             db.DOCTORs.Remove(dOCTOR);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
+        }*/
 
         protected override void Dispose(bool disposing)
         {

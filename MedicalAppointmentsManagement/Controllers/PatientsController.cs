@@ -44,15 +44,12 @@ namespace MedicalAppointmentsManagement.Controllers
         // GET: Patients/Menu
         public ActionResult Menu()
         {
-            if (Session["UserAMKA"] != null)
-            {
-                return View();
-
-            }
-            else
+            if (Session["UserAMKA"] == null)
             {
                 return RedirectToAction("Login");
+                
             }
+            return View();
         }
 
         //Logout
@@ -65,16 +62,20 @@ namespace MedicalAppointmentsManagement.Controllers
             return Redirect("../Home");
         }
 
-
+        /*
         // GET: Patients
         public ActionResult Index()
         {
             return View(db.PATIENTs.ToList());
-        }
+        }*/
 
         // GET: Patients/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["UserAMKA"] == null || !Session["UserAMKA"].ToString().Equals(id.ToString()))
+            {
+                return RedirectToAction("Login");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -104,7 +105,7 @@ namespace MedicalAppointmentsManagement.Controllers
             {
                 db.PATIENTs.Add(patient);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Login");
             }
 
             return View(patient);
@@ -113,6 +114,10 @@ namespace MedicalAppointmentsManagement.Controllers
         // GET: Patients/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["UserAMKA"] == null || !Session["UserAMKA"].ToString().Equals(id.ToString()))
+            {
+                return RedirectToAction("Login");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -132,6 +137,10 @@ namespace MedicalAppointmentsManagement.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "patientAMKA,userid,username,name,surname,password")] PATIENT patient)
         {
+            if (Session["UserAMKA"] == null || !Session["UserAMKA"].ToString().Equals(patient.patientAMKA.ToString()))
+            {
+                return RedirectToAction("Login");
+            }
             if (ModelState.IsValid)
             {
                 db.Entry(patient).State = EntityState.Modified;
@@ -143,8 +152,13 @@ namespace MedicalAppointmentsManagement.Controllers
         }
 
         // GET: Patients/Delete/5
+        /*
         public ActionResult Delete(int? id)
         {
+            if (Session["UserAMKA"] == null || !Session["UserAMKA"].ToString().Equals(id.ToString()))
+            {
+                return RedirectToAction("Login");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -162,11 +176,15 @@ namespace MedicalAppointmentsManagement.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (Session["UserAMKA"] == null || !Session["UserAMKA"].ToString().Equals(id.ToString()))
+            {
+                return RedirectToAction("Login");
+            }
             PATIENT pATIENT = db.PATIENTs.Find(id);
             db.PATIENTs.Remove(pATIENT);
             db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+            return RedirectToAction("Login");
+        }*/
 
         protected override void Dispose(bool disposing)
         {
