@@ -14,6 +14,12 @@ namespace MedicalAppointmentsManagement.Controllers
     {
         private MedicalDBEntities db = new MedicalDBEntities();
 
+        // Login
+        // GET: Admins/Index -> redirect to login
+        public ActionResult Index()
+        {
+            return RedirectToAction("Login");
+        }
 
         // Login
         // GET: Admins/Login
@@ -57,7 +63,6 @@ namespace MedicalAppointmentsManagement.Controllers
         }
 
         // Admins/Logout
-
         public ActionResult Logout()
         {
             Session["admin"] = null;
@@ -65,110 +70,6 @@ namespace MedicalAppointmentsManagement.Controllers
             Session.Abandon();
             return Redirect("../Home");
         }
-
-
-
-        /*
-        // GET: Admins
-        public ActionResult Index()
-        {
-            return View(db.ADMINs.ToList());
-        }
-
-        // GET: Admins/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ADMIN aDMIN = db.ADMINs.Find(id);
-            if (aDMIN == null)
-            {
-                return HttpNotFound();
-            }
-            return View(aDMIN);
-        }
-
-        // GET: Admins/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Admins/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "userid,username,password")] ADMIN Admin)
-        {
-            if (ModelState.IsValid)
-            {
-                db.ADMINs.Add(Admin);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(Admin);
-        }
-
-        // GET: Admins/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ADMIN aDMIN = db.ADMINs.Find(id);
-            if (aDMIN == null)
-            {
-                return HttpNotFound();
-            }
-            return View(aDMIN);
-        }
-
-        // POST: Admins/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "userid,username,password")] ADMIN Admin)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(Admin).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(Admin);
-        }
-
-        // GET: Admins/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ADMIN aDMIN = db.ADMINs.Find(id);
-            if (aDMIN == null)
-            {
-                return HttpNotFound();
-            }
-            return View(aDMIN);
-        }
-
-        // POST: Admins/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            ADMIN aDMIN = db.ADMINs.Find(id);
-            db.ADMINs.Remove(aDMIN);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        } */
 
         protected override void Dispose(bool disposing)
         {

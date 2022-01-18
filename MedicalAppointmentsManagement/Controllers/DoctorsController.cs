@@ -53,7 +53,6 @@ namespace MedicalAppointmentsManagement.Controllers
         }
 
         //Logout
-
         public ActionResult Logout()
         {
             Session["doctorAMKA"] = null;
@@ -62,12 +61,12 @@ namespace MedicalAppointmentsManagement.Controllers
             return Redirect("../Home");
         }
 
-        /*
-        // GET: Doctors
+
+        // GET: Index -> login
         public ActionResult Index()
         {
-            return View(db.DOCTORs.ToList());
-        }*/
+            return RedirectToAction("Menu");
+        }
 
 
         // GET: Doctors/Details/5
@@ -89,30 +88,6 @@ namespace MedicalAppointmentsManagement.Controllers
             }
             return View(dOCTOR);
         }
-
-        /*
-        // GET: Doctors/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Doctors/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "doctorAMKA,username,name,surname,specialty,password")] DOCTOR dOCTOR)
-        {
-            if (ModelState.IsValid)
-            {
-                db.DOCTORs.Add(dOCTOR);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(dOCTOR);
-        }*/
 
         // GET: Doctors/Edit/5
         public ActionResult Edit(int? id)
@@ -154,38 +129,6 @@ namespace MedicalAppointmentsManagement.Controllers
             }
             return View(doctor);
         }
-
-        /*
-        // GET: Doctors/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["doctorAMKA"] == null)
-            {
-                return RedirectToAction("Login");
-            }
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            DOCTOR dOCTOR = db.DOCTORs.Find(id);
-            if (dOCTOR == null)
-            {
-                return HttpNotFound();
-            }
-            return View(dOCTOR);
-        }
-
-        // POST: Doctors/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            DOCTOR dOCTOR = db.DOCTORs.Find(id);
-            db.DOCTORs.Remove(dOCTOR);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }*/
 
         protected override void Dispose(bool disposing)
         {

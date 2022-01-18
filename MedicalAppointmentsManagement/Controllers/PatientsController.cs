@@ -62,12 +62,12 @@ namespace MedicalAppointmentsManagement.Controllers
             return Redirect("../Home");
         }
 
-        /*
+        
         // GET: Patients
         public ActionResult Index()
         {
-            return View(db.PATIENTs.ToList());
-        }*/
+            return RedirectToAction("Login");
+        }
 
         // GET: Patients/Details/5
         public ActionResult Details(int? id)
@@ -150,41 +150,6 @@ namespace MedicalAppointmentsManagement.Controllers
             ViewData["Error"] = "Please check your infos!";
             return View(patient);
         }
-
-        // GET: Patients/Delete/5
-        /*
-        public ActionResult Delete(int? id)
-        {
-            if (Session["UserAMKA"] == null || !Session["UserAMKA"].ToString().Equals(id.ToString()))
-            {
-                return RedirectToAction("Login");
-            }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            PATIENT pATIENT = db.PATIENTs.Find(id);
-            if (pATIENT == null)
-            {
-                return HttpNotFound();
-            }
-            return View(pATIENT);
-        }
-
-        // POST: Patients/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            if (Session["UserAMKA"] == null || !Session["UserAMKA"].ToString().Equals(id.ToString()))
-            {
-                return RedirectToAction("Login");
-            }
-            PATIENT pATIENT = db.PATIENTs.Find(id);
-            db.PATIENTs.Remove(pATIENT);
-            db.SaveChanges();
-            return RedirectToAction("Login");
-        }*/
 
         protected override void Dispose(bool disposing)
         {
