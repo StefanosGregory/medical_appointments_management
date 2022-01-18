@@ -7,15 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.ComponentModel.DataAnnotations;
-using MedicalAppointmentsManagement.MetadataModel;
-
 namespace MedicalAppointmentsManagement.Models
 {
     using System;
     using System.Collections.Generic;
-
-    [MetadataType(typeof(PatientsMetadata))]
+    
     public partial class PATIENT
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
